@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SallerWebMVC.Data;
 
 namespace SallerWebMVC.Migrations
 {
     [DbContext(typeof(SallerWebMVCContext))]
-    partial class SallerWebMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20221229191131_FKDepartment")]
+    partial class FKDepartment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
