@@ -1,4 +1,5 @@
-﻿using SallerWebMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SallerWebMVC.Data;
 using SallerWebMVC.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace SallerWebMVC.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.FirstOrDefault(s => s.Id == id);
+            return _context.Seller.Include(d => d.Department).FirstOrDefault(s => s.Id == id);
         }
 
         public void Remove(int id)
