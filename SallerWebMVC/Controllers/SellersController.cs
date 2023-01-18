@@ -3,7 +3,9 @@ using SallerWebMVC.Models;
 using SallerWebMVC.Models.ViewModels;
 using SallerWebMVC.Services;
 using SallerWebMVC.Services.Exceptions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Permissions;
 
 namespace SallerWebMVC.Controllers
@@ -44,13 +46,13 @@ namespace SallerWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var seller = _sellerService.FindById(id.Value);
             if (seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
             }
 
             return View(seller);
@@ -68,13 +70,13 @@ namespace SallerWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var seller = _sellerService.FindById(id.Value);
             if (seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
             }
 
             return View(seller);
@@ -84,13 +86,13 @@ namespace SallerWebMVC.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido." });
             }
 
             var seller = _sellerService.FindById(id.Value);
             if (seller == null) 
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
             }
 
             List<Department> departments = _departmentService.FindAll();
@@ -104,21 +106,27 @@ namespace SallerWebMVC.Controllers
         {
             if(id != seller.Id) 
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id não correspondente." });
             }
             try
             {
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index));
             }
-            catch(NotFoundException)
+            catch(ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message }); 
             }
-            catch(DbConcurrencyException)
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }
