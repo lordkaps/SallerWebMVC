@@ -1,7 +1,9 @@
-﻿using SallerWebMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SallerWebMVC.Data;
 using SallerWebMVC.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SallerWebMVC.Services
 {
@@ -14,9 +16,9 @@ namespace SallerWebMVC.Services
             _context = context;
         }
 
-        public List<Department> FindAll()
+        public async Task<List<Department>> FindAllAsync()
         {
-            return _context.Department.OrderBy(d => d.Name).ToList();
+            return await _context.Department.OrderBy(d => d.Name).ToListAsync();
         }
     }
 }
