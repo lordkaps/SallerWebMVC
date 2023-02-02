@@ -32,6 +32,7 @@ namespace SallerWebMVC.Models
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double BaseSalary { get; set; }
 
+        [Display(Name = "Departamento")]
         public Department Department { get; set; }
         public int DepartmentId { get; set; }
 
